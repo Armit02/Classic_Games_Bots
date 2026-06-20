@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h> 
 
+#define PLAYERVAL = 1
+#define BOTVAL = 2
+
+#define DEFAULT_WIDTH = 8
+#define DEFAULT_HEIGHT = 6
+
 class Game {
     private: 
         int board_width;
@@ -17,13 +23,15 @@ class Game {
         void getCol(int index, int* col);
         void setCol(int index, int* state);
         bool makeMove(int col, bool player); 
+
+        void displayState();
 };
 
 // Overload constructors to give options
 Game::Game() {
     // Set up the game state
-    board_height = 6; 
-    board_width = 8;
+    board_height = DEFAULT_HEIGHT; 
+    board_width = DEFAULT_WIDTH;
     game_state[board_width*board_height] = {0};
     player_turn = 0;
 };
@@ -73,7 +81,7 @@ bool Game::makeMove(int col, bool player) {
         while (col_data[i] == 0 | i < board_height - 1) {
             i++;
         }
-        col_data[i] = player ? 1 : 2;
+        col_data[i] = player ? PLAYERVAL : BOTVAL;
         setCol(col, col_data);
         return 1;
     } catch (...) {
