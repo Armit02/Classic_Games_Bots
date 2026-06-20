@@ -1,0 +1,5 @@
+Plan for Connect 4 architecture
+
+- game.cpp: Sets up a game of connect 4, with a game object which keeps track of the score and victory state
+- score.cpp: Contains methods to score respective moves
+- bot.cpp: Contains the bot to make moves when on their turn 
