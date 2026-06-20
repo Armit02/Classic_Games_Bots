@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h> 
 
-#define PLAYERVAL = 1
-#define BOTVAL = 2
+#define PLAYERVAL 1
+#define BOTVAL 2
 
-#define DEFAULT_WIDTH = 8
-#define DEFAULT_HEIGHT = 6
+#define DEFAULT_WIDTH 8
+#define DEFAULT_HEIGHT 6
 
 class Game {
     private: 
@@ -32,7 +32,10 @@ Game::Game() {
     // Set up the game state
     board_height = DEFAULT_HEIGHT; 
     board_width = DEFAULT_WIDTH;
-    game_state[board_width*board_height] = {0};
+    game_state = new int [board_width*board_height];
+    for (int i = 0; i < board_height*board_width; i++) {
+        game_state[i] = 0;
+    }
     player_turn = 0;
 };
 
@@ -40,7 +43,10 @@ Game::Game(int width, int height) {
     // Set up the game state
     board_height = width; 
     board_width = height;
-    game_state[board_width*board_height] = {0};
+    game_state = new int [board_width*board_height];
+    for (int i = 0; i < board_height*board_width; i++) {
+        game_state[i] = 0;
+    }
     player_turn = 0;
 };
 
@@ -77,8 +83,8 @@ bool Game::makeMove(int col, bool player) {
     try {
         int col_data[board_height*board_width] = {0};
         getCol(col, col_data);
-        int i;
-        while (col_data[i] == 0 | i < board_height - 1) {
+        int i = 0;
+        while (col_data[i] == 0 || i < board_height - 1) {
             i++;
         }
         col_data[i] = player ? PLAYERVAL : BOTVAL;
@@ -90,6 +96,18 @@ bool Game::makeMove(int col, bool player) {
     }
 };
 
+void Game::displayState() {
+    printf("Game State ----\n\n");
+    for (int i = 0; i < board_height; i++) {
+        for (int j = 0; j < board_width; j++) {
+            printf("%d",game_state[i*board_width + j]);
+        }
+        printf("\n");
+    }
+}
+
 int main() {
+    Game newGame;
+    newGame.displayState();
     return 0;
 };
