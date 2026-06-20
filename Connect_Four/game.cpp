@@ -80,20 +80,24 @@ void Game::setCol(int index, int* modified_col) {
 };
 
 bool Game::makeMove(int col, bool player) {
-    try {
-        int col_data[board_height*board_width] = {0};
-        getCol(col, col_data);
-        int i = 0;
-        while (col_data[i] == 0 || i < board_height - 1) {
-            i++;
+    int col_data[board_height];
+    getCol(col, col_data);
+    int target = -1;
+    for (int i = board_height - 1; i >= 0; i--) {
+        if (col_data[i] == 0) {
+            target = i;
+            break;
         }
-        col_data[i] = player ? PLAYERVAL : BOTVAL;
-        setCol(col, col_data);
-        return 1;
-    } catch (...) {
-        printf("Move Failed...\n");
-        return 0;
     }
+    
+    if (target == -1) {
+        printf("\n Move Failed! Column is Full\n");
+        return 0;
+    } else {
+        col_data[target] = player ? PLAYERVAL : BOTVAL;
+    }
+    setCol(col, col_data);
+    return 1;
 };
 
 void Game::displayState() {
@@ -109,5 +113,12 @@ void Game::displayState() {
 int main() {
     Game newGame;
     newGame.displayState();
-    return 0;
+    int choice; 
+    while (1) {
+        printf("Enter the column to place a chip\n");
+        scanf("%d", &choice);
+        newGame.makeMove(choice, 1);
+        newGame.displayState();
+    }
+    return 1;
 };
