@@ -1,31 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h> 
+#include "game.h"
+#include "score.h"
 
 #define PLAYERVAL 1
 #define BOTVAL 2
 
 #define DEFAULT_WIDTH 8
 #define DEFAULT_HEIGHT 6
-
-class Game {
-    private: 
-        int board_width;
-        int board_height;
-
-        bool player_turn;
-
-        int *game_state;
-    public: 
-        Game();
-        Game(int width, int height);
-        //~Game();
-        void getState(int* state_frame);
-        void getCol(int index, int* col);
-        void setCol(int index, int* state);
-        bool makeMove(int col, bool player); 
-
-        void displayState();
-};
 
 // Overload constructors to give options
 Game::Game() {
@@ -54,6 +36,14 @@ Game::Game(int width, int height) {
 // Game::~Game() {
 
 // };
+
+int Game::getWidth() {
+    return board_width;
+}
+
+int Game::getHeight() {
+    return board_height;
+}
 
 void Game::getState(int* state_frame) {
     //int* state_frame = new int[board_width*board_height];
@@ -112,6 +102,7 @@ void Game::displayState() {
 
 int main() {
     Game newGame;
+    Score gameScore(newGame);
     newGame.displayState();
     int choice; 
     while (1) {
@@ -119,6 +110,8 @@ int main() {
         scanf("%d", &choice);
         newGame.makeMove(choice, 1);
         newGame.displayState();
+        printf("\n\nChecking Win condition...\n");
+        gameScore.checkWin();
     }
     return 1;
 };

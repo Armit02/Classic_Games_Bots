@@ -1,4 +1,4 @@
-#ifdef GAME_H
+#ifndef GAME_H
 
 #define GAME_H
 
@@ -14,6 +14,8 @@ class Game {
         Game();
         Game(int width, int height);
         //~Game();
+        int getWidth();
+        int getHeight();
         void getState(int* state_frame);
         void getCol(int index, int* col);
         void setCol(int index, int* state);
