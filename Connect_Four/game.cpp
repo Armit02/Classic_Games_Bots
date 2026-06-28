@@ -14,6 +14,7 @@ Game::Game() {
     // Set up the game state
     board_height = DEFAULT_HEIGHT; 
     board_width = DEFAULT_WIDTH;
+    turn = 0;
     game_state = new int [board_width*board_height];
     for (int i = 0; i < board_height*board_width; i++) {
         game_state[i] = 0;
@@ -25,6 +26,7 @@ Game::Game(int width, int height) {
     // Set up the game state
     board_height = width; 
     board_width = height;
+    turn = 0;
     game_state = new int [board_width*board_height];
     for (int i = 0; i < board_height*board_width; i++) {
         game_state[i] = 0;
@@ -81,7 +83,7 @@ bool Game::makeMove(int col, bool player) {
     }
     
     if (target == -1) {
-        printf("\n Move Failed! Column is Full\n");
+        printf("\nMove Failed! Column is Full\n");
         return 0;
     } else {
         col_data[target] = player ? PLAYERVAL : BOTVAL;
@@ -91,13 +93,19 @@ bool Game::makeMove(int col, bool player) {
 };
 
 void Game::displayState() {
-    printf("Game State ----\n\n");
+    // CLI Display
+    printf("\n---- Game State: Turn %d----\n\n|", turn);
     for (int i = 0; i < board_height; i++) {
         for (int j = 0; j < board_width; j++) {
-            printf("%d",game_state[i*board_width + j]);
+            if (game_state[i*board_width + j] != 0) {
+                printf(" %d ",game_state[i*board_width + j]);
+            } else {
+                printf("   ");
+            }
         }
-        printf("\n");
+        printf("|\n|");
     }
+    printf("\n");
 }
 
 int main() {
@@ -110,7 +118,7 @@ int main() {
         scanf("%d", &choice);
         newGame.makeMove(choice, 1);
         newGame.displayState();
-        printf("\n\nChecking Win condition...\n");
+        printf("\nChecking Win condition...\n");
         gameScore.checkWin();
     }
     return 1;

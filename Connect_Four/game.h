@@ -6,6 +6,7 @@ class Game {
     private: 
         int board_width;
         int board_height;
+        int turn;
 
         bool player_turn;
 

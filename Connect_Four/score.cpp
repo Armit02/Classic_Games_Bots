@@ -53,29 +53,53 @@ void Score::checkWin() {
                     dirs.vert = 0;
                 }
 
+                //printf("Checking:\nVertical %d\nLeft Diagonal %d \nRight Diagonal %d\nRight %d\n",dirs.vert,dirs.left_diag,dirs.right_diag,dirs.right);
+
                 // If at this stage, a win is possible
-                printf("Vertical direction value: %d\n",dirs.vert);
                 if (dirs.vert == 1) {
                     for (int k = i - 3; k < i; k++) {
-                        // printf("\nChecking from index %d to index %d\n",index,k*width + j);
-                        // printf("Value for this k position is: %d\n",game_frame[index - k*width]);
-                        if (game_frame[k*width + j] == 1) {
-                            win_state = 1;
-                        } else {
-                            win_state = 0; 
+                        if (!game_frame[k*width + j]) {
+                            break;
+                        } 
+                        win_state = 1;
+                    }
+                }
+
+                if (dirs.left_diag == 1) {
+                    for (int k = i - 3; k < i; k++) {
+                        // Potentially overcomplicated check
+                        if (!game_frame[k*width + j - (i - k)]) {
                             break;
                         }
+                        win_state = 1;
+                    }
+                }
+
+                if (dirs.right_diag == 1) {
+                    for (int k = i - 3; k < i; k++) {
+                        // Potentially overcomplicated check
+                        if (!game_frame[k*width + j + (i - k)]) {
+                            break;
+                        } 
+                        win_state = 1;
+                    }
+                }
+
+                if (dirs.right == 1) {
+                    for (int k = j + 3; k > j; k--) {
+                        if (!game_frame[i*width + k]) {
+                            break;
+                        } 
+                        win_state = 1;
                     }
                 }
                 // TODO: The rest of the checks
                 // Save previous win conditions to identify multiple
+                // printf("--Win Condition: %d--\n",win_state);
 
                 if (win_state) {
                     printf("-- PLAYER WIN!! -- At index %d\n\n", index);
                     return;
-
-                } else {
-                    printf("No win found at index %d\n", index);
                 }
             }
         }
